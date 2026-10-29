@@ -32,7 +32,9 @@ export function checkProofStart(env: Record<string, string | undefined>, proofEx
   const problems: string[] = [];
   const base = preflight(env, CELO_MAINNET);
   if (!base.ok) problems.push(...base.problems);
-  if (!env.ANTHROPIC_API_KEY) problems.push("ANTHROPIC_API_KEY is required: a proof with stand-in agents would show placeholder work");
+  if (!env.ZEROG_API_KEY?.trim() && !env.ANTHROPIC_API_KEY?.trim()) {
+    problems.push("ZEROG_API_KEY (the 0G Router) or ANTHROPIC_API_KEY is required: a proof with stand-in agents would show placeholder work");
+  }
   if (proofExists && env.OUTBID_PROOF_AGAIN !== "1") {
     problems.push(`${PROOF_FILE} already exists: running again spends real money again. Set OUTBID_PROOF_AGAIN=1 to replace it`);
   }

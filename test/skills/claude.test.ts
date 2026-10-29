@@ -1,18 +1,15 @@
 import { describe, expect, it } from "vitest";
 import { buildRoster, claudeGrader, claudeSkill } from "../../src/skills/claude.js";
 import type { Task, TaskKind } from "../../src/arena/types.js";
+import type { Chat, Llm } from "../../src/skills/llm.js";
 
 type Call = { model: string; system?: string; content: string };
 
-function fakeClient(reply: string, calls: Call[] = []) {
-  return {
-    messages: {
-      create: async (args: { model: string; system?: string; messages: { content: string }[] }) => {
-        calls.push({ model: args.model, system: args.system, content: args.messages[0]!.content });
-        return { content: [{ type: "text", text: reply }] };
-      },
-    },
-  } as never;
+function fakeChat(reply: string, calls: Call[] = []): Chat {
+  return async (args) => {
+    calls.push({ model: args.model, system: args.system, content: args.content });
+    return reply;
+  };
 }
 
 const task: Task = { kind: "summarize", input: "Revenue grew faster than planned across every region this quarter." };
@@ -20,7 +17,7 @@ const task: Task = { kind: "summarize", input: "Revenue grew faster than planned
 describe("claude skill", () => {
   it("sends the task input to the chosen model and returns the text reply", async () => {
     const calls: Call[] = [];
-    const skill = claudeSkill("summarize", { client: fakeClient("Revenue beat plan.", calls), model: "claude-haiku-5-5" });
+    const skill = claudeSkill("summarize", { chat: fakeChat("Revenue beat plan.", calls), model: "claude-haiku-5-5" });
 
     expect(skill.kind).toBe("summarize");
     expect(await skill.run(task)).toBe("Revenue beat plan.");
@@ -29,7 +26,7 @@ describe("claude skill", () => {
 });
 
 describe("claude grader", () => {
-  const grade = (reply: string) => claudeGrader({ client: fakeClient(reply), model: "claude-haiku-5-5" })(task, "an output");
+  const grade = (reply: string) => claudeGrader({ chat: fakeChat(reply), model: "claude-haiku-5-5" })(task, "an output");
 
   it("parses a score from the reply", async () => {
     expect(await grade("0.8")).toBe(0.8);
@@ -51,6 +48,19 @@ describe("seller roster", () => {
   it("falls back to stub mode without an API key", () => {
     expect(buildRoster({}).mode).toBe("stub");
     expect(buildRoster({ ANTHROPIC_API_KEY: "sk-test" }).mode).toBe("claude");
+    expect(buildRoster({ ZEROG_API_KEY: "key" }).mode).toBe("claude");
+  });
+
+  it("runs the cheap sellers and the grader on the fast model, the rest on the strong one", async () => {
+    const calls: Call[] = [];
+    const llm: Llm = { provider: "0g", chat: fakeChat("0.7", calls), fast: "fast-model", strong: "strong-model" };
+    const { roster, grader } = buildRoster({}, llm);
+    const run = (name: string) => roster.find((r) => r.name === name)!.skills.find((s) => s.kind === "summarize" || s.kind === "translate")!.run(sample("summarize"));
+
+    for (const name of ["Quill", "Marrow", "Vesper", "Lex", "Gist"]) await run(name);
+    await grader(sample("summarize"), "an output");
+
+    expect(calls.map((c) => c.model)).toEqual(["fast-model", "fast-model", "strong-model", "strong-model", "strong-model", "fast-model"]);
   });
 
   it("has at least three distinct sellers per kind with cent-sized prices and different speeds", () => {
@@ -102,8 +112,8 @@ describe("seller roster", () => {
   });
 });
 
-describe.skipIf(!process.env.ANTHROPIC_API_KEY)("live Claude smoke test", () => {
-  it("summarizes with Haiku", async () => {
+describe.skipIf(!process.env.ZEROG_API_KEY && !process.env.ANTHROPIC_API_KEY)("live model smoke test", () => {
+  it("summarizes with the configured model", async () => {
     const { roster, mode } = buildRoster(process.env);
     expect(mode).toBe("claude");
     const output = await roster[0]!.skills.find((s) => s.kind === "summarize")!.run(task);

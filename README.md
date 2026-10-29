@@ -7,7 +7,7 @@ pnpm install
 pnpm demo          # starts a practice copy of Celo (no real money) and the page
 ```
 
-Open the address it prints. With no `ANTHROPIC_API_KEY` the agents are stand-ins that return placeholder text; copy `.env.example` to `.env` and add a key for real agents.
+Open the address it prints. With no key the agents are stand-ins that return placeholder text. For real agents copy `.env.example` to `.env` and set `ZEROG_API_KEY` (the [0G Router](https://docs.0g.ai/developer-hub/building-on-0g/compute-network/router/overview), which serves Claude models) or `ANTHROPIC_API_KEY`.
 
 - `web/` is the page. `?replay` plays back four real auctions recorded on the practice chain.
 - `src/arena/round.ts` runs one auction. `src/agents/` holds the sellers and the scoring.
@@ -24,4 +24,4 @@ pnpm funding       # read-only: which addresses to fund, with how much USDT (und
 pnpm proof         # three small auctions with Claude agents, one with a hire; writes web/fixtures/proof.json
 ```
 
-Gas on Celo is paid in USDT, so USDT is all any address needs. `pnpm proof` refuses without `ANTHROPIC_API_KEY`, refuses to run twice (set `OUTBID_PROOF_AGAIN=1` to replace a recording), and caps spending at 1.00 USDT through the on-chain policy. If a round fails the run stops, lists every payment already made, and keeps the record in `state/proof-failed.json`. When it ends it revokes the spending limits it created. Open the page with `?proof` to see the recording with every payment linked to Celoscan.
+Gas on Celo is paid in USDT, so USDT is all any address needs. `pnpm proof` refuses without `ZEROG_API_KEY` or `ANTHROPIC_API_KEY`, refuses to run twice (set `OUTBID_PROOF_AGAIN=1` to replace a recording), and caps spending at 1.00 USDT through the on-chain policy. If a round fails the run stops, lists every payment already made, and keeps the record in `state/proof-failed.json`. When it ends it revokes the spending limits it created. Open the page with `?proof` to see the recording with every payment linked to Celoscan.

@@ -8,7 +8,7 @@ const ready = () => ({
   OUTBID_OWNER_KEY: generatePrivateKey(),
   OUTBID_BUYER_KEY: generatePrivateKey(),
   OUTBID_SELLER_MNEMONIC: generateMnemonic(english),
-  ANTHROPIC_API_KEY: "sk-ant-test",
+  ZEROG_API_KEY: "key-test",
 });
 const problems = (env: Record<string, string | undefined>, exists = false) => {
   const result = checkProofStart(env, exists);
@@ -26,7 +26,12 @@ describe("the real-money proof run", () => {
   });
 
   it("will not run with stand-in agents: placeholder work proves nothing", () => {
-    expect(problems({ ...ready(), ANTHROPIC_API_KEY: undefined }).join("\n")).toMatch(/ANTHROPIC_API_KEY/);
+    expect(problems({ ...ready(), ZEROG_API_KEY: undefined }).join("\n")).toMatch(/ZEROG_API_KEY/);
+    expect(problems({ ...ready(), ZEROG_API_KEY: "  " }).join("\n")).toMatch(/ZEROG_API_KEY/);
+  });
+
+  it("takes either the 0G Router key or an Anthropic key", () => {
+    expect(problems({ ...ready(), ZEROG_API_KEY: undefined, ANTHROPIC_API_KEY: "sk-ant-test" })).toEqual([]);
   });
 
   it("will not spend twice by accident: a recorded proof needs an explicit go-ahead to be replaced", () => {
