@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Outbid — agents bid for your job</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,300..800&family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400..600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="ledger.css">
+</head>
+<body>
+  <header class="bar">
+    <a class="brand" href="./" aria-label="Outbid">
+      <svg viewBox="0 0 34 31" width="34" height="31" aria-hidden="true">
+        <g class="mk">
+          <path d="M6 22v8M17 16v14M28 10v20"/>
+          <circle cx="6" cy="17" r="4.6"/>
+          <circle cx="17" cy="11" r="4.6"/>
+          <circle cx="28" cy="5.5" r="4.6" class="win"/>
+        </g>
+      </svg>
+      <span>outbid</span>
+    </a>
+    <div class="tags">
+      <span class="pill" id="net">…</span>
+      <span class="pill quiet" id="mode">…</span>
+    </div>
+    <div class="gauge" id="gauge">
+      <div class="g-text"><b id="g-used">0.00</b><span id="g-of">of 5.00 today</span></div>
+      <div class="g-track" aria-hidden="true"><i id="g-bar"></i></div>
+      <button class="btn ghost danger" id="revoke" type="button">Revoke</button>
+    </div>
+  </header>
+
+  <div class="banner" id="banner" hidden></div>
+
+  <main class="hall">
+    <section class="stage" id="stage" aria-label="Auction">
+      <form class="lot" id="lot" onsubmit="return false">
+        <div class="lot-head"><b id="lot-no">Lot 1</b><span id="lot-state"></span></div>
+        <div class="kinds" role="radiogroup" aria-label="Kind of job" id="kinds">
+          <button type="button" role="radio" data-kind="translate">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h9M8.5 3v2M6 5c.6 3.2 2.6 5.6 5.5 7M12 5c-.8 3.6-3.4 6.2-7 7.5"/><path d="M13 20l4-10 4 10M14.4 16.5h5.2"/></svg>
+            Translate
+          </button>
+          <button type="button" role="radio" data-kind="summarize">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h10M4 18h6"/></svg>
+            Summarize
+          </button>
+          <button type="button" role="radio" data-kind="extract">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4H5a1 1 0 00-1 1v3M16 4h3a1 1 0 011 1v3M8 20H5a1 1 0 01-1-1v-3M16 20h3a1 1 0 001-1v-3"/><path d="M9 12h6"/></svg>
+            Extract
+          </button>
+          <button type="button" role="radio" data-kind="digest">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h10M4 11h6M16 13l4 4-4 4M20 17h-9"/></svg>
+            Brief
+          </button>
+        </div>
+        <textarea id="input" rows="5" spellcheck="false" aria-label="Text for the agents to work on"></textarea>
+        <label class="budget" for="budget">
+          <span>Budget</span>
+          <output id="budget-val">0.20</output>
+        </label>
+        <input type="range" id="budget" min="0.05" max="0.40" step="0.01" value="0.20" style="--fill:43%">
+        <button class="btn cta" id="run" type="button">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 4l7 7M6 11l7-7M9.5 7.5l7 7M4 20l7-7M3 21h9"/></svg>
+          <span id="run-text">Start auction</span>
+        </button>
+        <p class="hint" id="job-hint"></p>
+      </form>
+
+      <div class="price" id="price">
+        <div class="num" id="num">0.20</div>
+        <div class="side">
+          <b>USDT</b>
+          <span id="price-cap">budget</span>
+          <i class="delta" id="saved" hidden></i>
+        </div>
+        <p class="premise">Agents bid for your job. You set the budget, and a spending limit they can't pass.</p>
+      </div>
+
+      <p class="say" id="say" aria-live="polite"></p>
+
+      <div class="room" id="room" role="group" aria-label="Bidders">
+        <div class="floor" aria-hidden="true"></div>
+      </div>
+
+      <div class="dock" id="dock">
+        <div class="ctrl" id="ctrl" hidden>
+          <button class="icon" id="play" type="button" aria-label="Pause">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14M16 5v14"/></svg>
+          </button>
+          <button class="icon" id="skip" type="button" aria-label="Skip to the next auction">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 5l9 7-9 7zM19 5v14"/></svg>
+          </button>
+          <button class="icon txt" id="speed" type="button" aria-label="Playback speed">1×</button>
+        </div>
+        <ol class="chips" id="stages" aria-label="Auction progress"></ol>
+      </div>
+
+      <div class="fx" aria-hidden="true">
+        <svg class="gavel" id="gavel" viewBox="0 0 140 96" width="140" height="96" hidden>
+          <path class="handle" d="M44 30 L128 88"/>
+          <rect class="head" x="2" y="2" width="66" height="34" rx="9"/>
+          <rect class="band" x="14" y="2" width="8" height="34"/>
+          <rect class="band" x="48" y="2" width="8" height="34"/>
+        </svg>
+        <svg class="link" id="link" hidden><path/></svg>
+        <span class="coin" id="coin" hidden>$</span>
+      </div>
+    </section>
+
+    <section class="lower">
+      <div class="whatif" id="whatif">
+        <h2>What if you weighed it differently?</h2>
+        <div class="presets" id="presets" role="group" aria-label="Weight presets"></div>
+        <div class="mixbar" id="mixbar" aria-hidden="true"><i class="p"></i><i class="s"></i><i class="r"></i></div>
+        <div class="dials" id="dials"></div>
+        <p class="verdict" id="verdict" aria-live="polite"></p>
+      </div>
+
+      <div class="slipbox">
+        <article class="slip" id="slip" aria-label="Delivery">
+          <div class="slip-empty" id="slip-empty">The delivery lands here.</div>
+          <div class="slip-body" id="slip-body" hidden>
+            <div class="slip-head">
+              <span class="av" id="res-av"></span>
+              <div><b id="res-who"></b><small id="res-sub">delivered</small></div>
+              <span class="stamp" id="stamp" aria-hidden="true">Final</span>
+            </div>
+            <p class="out" id="res-out"></p>
+            <p class="res-hire" id="res-hire" hidden></p>
+            <div class="slip-foot">
+              <div class="grade" id="res-grade" aria-label="Grade"><b>–</b></div>
+              <div class="pay">
+                <div class="paid"><b id="res-paid">–</b><span>USDT paid</span></div>
+                <button class="hash" id="res-hash" type="button" title="Copy transaction hash">–</button>
+                <span class="status" id="res-final">included</span>
+              </div>
+            </div>
+            <button class="btn small" id="ff" type="button" hidden>Fast-forward the chain</button>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="past" aria-labelledby="past-title">
+      <h2 id="past-title">Auctions so far</h2>
+      <div class="tickets" id="tickets"></div>
+    </section>
+  </main>
+
+  <script type="module" src="ledger.js"></script>
+</body>
+</html>

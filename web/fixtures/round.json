@@ -1,0 +1,1013 @@
+{
+ "recordedAt": "2026-10-28T20:24:58.892Z",
+ "mode": "stub",
+ "state": {
+  "ledger": {
+   "rounds": [
+    {
+     "rfqId": "rfq-77777ee9",
+     "task": {
+      "kind": "summarize",
+      "input": "The committee reviewed the quarterly numbers and agreed that revenue growth was ahead of plan across every region, while margins also improved thanks to lower shipping costs."
+     },
+     "budget": "0.20",
+     "status": "delivered",
+     "bids": [
+      {
+       "seller": "Quill",
+       "price": "0.02",
+       "etaMs": 4000
+      },
+      {
+       "seller": "Marrow",
+       "price": "0.05",
+       "etaMs": 2500
+      },
+      {
+       "seller": "Vesper",
+       "price": "0.09",
+       "etaMs": 1200
+      },
+      {
+       "seller": "Gist",
+       "price": "0.03",
+       "etaMs": 2200
+      },
+      {
+       "seller": "Sly",
+       "price": "0.01",
+       "rejected": "wrong_payer"
+      },
+      {
+       "seller": "Fakir",
+       "rejected": "invalid_signature"
+      }
+     ],
+     "final": true,
+     "hires": [],
+     "winner": "Gist",
+     "hash": "0x5f13cad7734df7b5f0cbdf4260faa0b490f8e473716e4efd6a5f2c32e9951415",
+     "output": "[summary] The committee reviewed the quarterly numbers and agreed",
+     "grade": 0.9558823529411765
+    },
+    {
+     "rfqId": "rfq-7836bd95",
+     "task": {
+      "kind": "translate",
+      "input": "Good morning. The shipment arrives on Friday and the invoice is attached to this message."
+     },
+     "budget": "0.15",
+     "status": "delivered",
+     "bids": [
+      {
+       "seller": "Quill",
+       "price": "0.02",
+       "etaMs": 4000
+      },
+      {
+       "seller": "Marrow",
+       "price": "0.05",
+       "etaMs": 2500
+      },
+      {
+       "seller": "Vesper",
+       "price": "0.09",
+       "etaMs": 1200
+      },
+      {
+       "seller": "Lex",
+       "price": "0.03",
+       "etaMs": 2000
+      },
+      {
+       "seller": "Sly",
+       "price": "0.01",
+       "rejected": "wrong_payer"
+      },
+      {
+       "seller": "Fakir",
+       "rejected": "invalid_signature"
+      }
+     ],
+     "final": true,
+     "hires": [],
+     "winner": "Lex",
+     "hash": "0xa24ac518ed9facdb444fe5ee9f9cda3906a3851d0804ebf3267e2ad80890f3c3",
+     "output": "[translated] GOOD MORNING. THE SHIPMENT ARRIVES ON FRIDAY AND THE INVOICE IS ATTACHED TO THIS MES",
+     "grade": 0.9509803921568627
+    },
+    {
+     "rfqId": "rfq-eda82b73",
+     "task": {
+      "kind": "extract",
+      "input": "Maria Okafor signed the lease for the Lagos warehouse on 3 March, paying a deposit of 4,500 USDT through the escrow contract."
+     },
+     "budget": "0.20",
+     "status": "delivered",
+     "bids": [
+      {
+       "seller": "Quill",
+       "price": "0.02",
+       "etaMs": 4000
+      },
+      {
+       "seller": "Marrow",
+       "price": "0.05",
+       "etaMs": 2500
+      },
+      {
+       "seller": "Vesper",
+       "price": "0.09",
+       "etaMs": 1200
+      },
+      {
+       "seller": "Sly",
+       "price": "0.01",
+       "rejected": "wrong_payer"
+      },
+      {
+       "seller": "Fakir",
+       "rejected": "invalid_signature"
+      }
+     ],
+     "final": true,
+     "hires": [],
+     "winner": "Marrow",
+     "hash": "0x50db1706a65adeea4d2ffb374fb0e0ae4b5ab916e0f7fa1be7bf521977da8d5d",
+     "output": "[extract] Okafor, signed, warehouse, March,, paying, deposit, through, ",
+     "grade": 0.8068181818181818
+    },
+    {
+     "rfqId": "rfq-e35636b0",
+     "task": {
+      "kind": "digest",
+      "input": "Customers praised the new checkout flow, but several reported that the confirmation email arrived late and that refunds took longer than the promised three days."
+     },
+     "budget": "0.10",
+     "status": "delivered",
+     "bids": [
+      {
+       "seller": "Vesper",
+       "price": "0.1",
+       "etaMs": 1800
+      },
+      {
+       "seller": "Quill",
+       "price": "0.03",
+       "etaMs": 6000
+      },
+      {
+       "seller": "Marrow",
+       "price": "0.08",
+       "etaMs": 3750
+      },
+      {
+       "seller": "Lex",
+       "price": "0.06",
+       "etaMs": 4200
+      },
+      {
+       "seller": "Gist",
+       "price": "0.06",
+       "etaMs": 4200
+      }
+     ],
+     "final": true,
+     "hires": [
+      {
+       "from": "Gist",
+       "to": "Lex",
+       "part": "translate",
+       "delivered": true,
+       "hash": "0xf0fdba136ace392c5f7b3899469bdcde8a53338fd2d66e80231c1d384e391a34",
+       "amount": "0.03"
+      }
+     ],
+     "winner": "Gist",
+     "hash": "0xb462fa7a23dd3ac3c2a54b680de067943c40d1be1e49af0dcf55a155b08798a5",
+     "output": "[translated] [SUMMARY] CUSTOMERS PRAISED THE NEW CHECKOUT FLOW, BUT SEV",
+     "grade": 0.922077922077922
+    }
+   ],
+   "policyRevoked": false
+  },
+  "mode": "stub",
+  "network": "fork",
+  "policy": {
+   "active": true,
+   "revoked": false,
+   "spendable": "0.5 USDT",
+   "remainingToday": "4.83 USDT",
+   "perPayment": "0.5 USDT",
+   "perDay": "5 USDT"
+  },
+  "sellers": [
+   {
+    "name": "Quill",
+    "address": "0x58A57ed9d8d624cBD12e2C467D34787555bB1b25",
+    "kinds": [
+     "translate",
+     "summarize",
+     "extract",
+     "digest"
+    ],
+    "etaMs": 4000,
+    "reputation": null
+   },
+   {
+    "name": "Marrow",
+    "address": "0x0D3eB21b6b21833A4939Cfff4810E9AE0758e12C",
+    "kinds": [
+     "translate",
+     "summarize",
+     "extract",
+     "digest"
+    ],
+    "etaMs": 2500,
+    "reputation": {
+     "jobs": 1,
+     "avgGrade": 0.8068181818181818,
+     "onTimeRate": 1
+    }
+   },
+   {
+    "name": "Vesper",
+    "address": "0xe42f4612e154153B68e241e8FDe337e0c4dD6bBD",
+    "kinds": [
+     "translate",
+     "summarize",
+     "extract",
+     "digest"
+    ],
+    "etaMs": 1200,
+    "reputation": null
+   },
+   {
+    "name": "Lex",
+    "address": "0x2F07c220dC62CE9531bC44B695A6D93578806d8d",
+    "kinds": [
+     "translate",
+     "digest"
+    ],
+    "etaMs": 2000,
+    "reputation": {
+     "jobs": 1,
+     "avgGrade": 0.9509803921568627,
+     "onTimeRate": 1
+    }
+   },
+   {
+    "name": "Gist",
+    "address": "0x1454168e82efA260f49a6F86612cc6414Ba633e9",
+    "kinds": [
+     "summarize",
+     "digest"
+    ],
+    "etaMs": 2200,
+    "reputation": {
+     "jobs": 2,
+     "avgGrade": 0.9389801375095492,
+     "onTimeRate": 1
+    }
+   },
+   {
+    "name": "Sly",
+    "address": "0x4fb070eF70961D204961c69B954B99808b9694BC",
+    "kinds": [
+     "translate",
+     "summarize",
+     "extract"
+    ],
+    "etaMs": 400,
+    "reputation": null
+   },
+   {
+    "name": "Fakir",
+    "address": "0x603049dcd328D58c9053eBE34F1692c0fac683f8",
+    "kinds": [
+     "translate",
+     "summarize",
+     "extract"
+    ],
+    "etaMs": 400,
+    "reputation": null
+   }
+  ]
+ },
+ "events": [
+  {
+   "type": "rfq.opened",
+   "rfq": {
+    "id": "rfq-77777ee9",
+    "task": {
+     "kind": "summarize",
+     "input": "The committee reviewed the quarterly numbers and agreed that revenue growth was ahead of plan across every region, while margins also improved thanks to lower shipping costs."
+    },
+    "payer": "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC",
+    "budget": "0.20",
+    "deadlineMs": 30000,
+    "openedAt": 1793219096050
+   },
+   "seq": 1,
+   "at": 1793219096050
+  },
+  {
+   "type": "bid.received",
+   "rfqId": "rfq-77777ee9",
+   "seller": "Quill",
+   "price": "0.02",
+   "etaMs": 4000,
+   "seq": 2,
+   "at": 1793219096085
+  },
+  {
+   "type": "bid.received",
+   "rfqId": "rfq-77777ee9",
+   "seller": "Marrow",
+   "price": "0.05",
+   "etaMs": 2500,
+   "seq": 3,
+   "at": 1793219096091
+  },
+  {
+   "type": "bid.received",
+   "rfqId": "rfq-77777ee9",
+   "seller": "Vesper",
+   "price": "0.09",
+   "etaMs": 1200,
+   "seq": 4,
+   "at": 1793219096091
+  },
+  {
+   "type": "bid.received",
+   "rfqId": "rfq-77777ee9",
+   "seller": "Gist",
+   "price": "0.03",
+   "etaMs": 2200,
+   "seq": 5,
+   "at": 1793219096091
+  },
+  {
+   "type": "bid.rejected",
+   "rfqId": "rfq-77777ee9",
+   "seller": "Sly",
+   "reason": "wrong_payer",
+   "price": "0.01",
+   "seq": 6,
+   "at": 1793219096096
+  },
+  {
+   "type": "bid.rejected",
+   "rfqId": "rfq-77777ee9",
+   "seller": "Fakir",
+   "reason": "invalid_signature",
+   "seq": 7,
+   "at": 1793219096500
+  },
+  {
+   "type": "winner.chosen",
+   "rfqId": "rfq-77777ee9",
+   "seller": "Gist",
+   "price": "0.03",
+   "scores": [
+    {
+     "seller": "Gist",
+     "price": "0.03",
+     "etaMs": 2200,
+     "score": 0.7035714285714286,
+     "parts": {
+      "price": 0.85,
+      "speed": 0.6428571428571428,
+      "record": 0.5
+     }
+    },
+    {
+     "seller": "Marrow",
+     "price": "0.05",
+     "etaMs": 2500,
+     "score": 0.6321428571428571,
+     "parts": {
+      "price": 0.75,
+      "speed": 0.5357142857142857,
+      "record": 0.5
+     }
+    },
+    {
+     "seller": "Vesper",
+     "price": "0.09",
+     "etaMs": 1200,
+     "score": 0.625,
+     "parts": {
+      "price": 0.55,
+      "speed": 1,
+      "record": 0.5
+     }
+    },
+    {
+     "seller": "Quill",
+     "price": "0.02",
+     "etaMs": 4000,
+     "score": 0.6,
+     "parts": {
+      "price": 0.9,
+      "speed": 0,
+      "record": 0.5
+     }
+    }
+   ],
+   "seq": 8,
+   "at": 1793219096505
+  },
+  {
+   "type": "payment.sent",
+   "rfqId": "rfq-77777ee9",
+   "seller": "Gist",
+   "hash": "0x5f13cad7734df7b5f0cbdf4260faa0b490f8e473716e4efd6a5f2c32e9951415",
+   "amount": "0.03",
+   "seq": 9,
+   "at": 1793219097461
+  },
+  {
+   "type": "payment.included",
+   "rfqId": "rfq-77777ee9",
+   "hash": "0x5f13cad7734df7b5f0cbdf4260faa0b490f8e473716e4efd6a5f2c32e9951415",
+   "seq": 10,
+   "at": 1793219097461
+  },
+  {
+   "type": "work.started",
+   "rfqId": "rfq-77777ee9",
+   "seller": "Gist",
+   "seq": 11,
+   "at": 1793219097471
+  },
+  {
+   "type": "work.delivered",
+   "rfqId": "rfq-77777ee9",
+   "seller": "Gist",
+   "output": "[summary] The committee reviewed the quarterly numbers and agreed",
+   "seq": 12,
+   "at": 1793219097471
+  },
+  {
+   "type": "result.graded",
+   "rfqId": "rfq-77777ee9",
+   "seller": "Gist",
+   "grade": 0.9558823529411765,
+   "seq": 13,
+   "at": 1793219097471
+  },
+  {
+   "type": "round.ended",
+   "rfqId": "rfq-77777ee9",
+   "status": "delivered",
+   "seq": 14,
+   "at": 1793219097471
+  },
+  {
+   "type": "rfq.opened",
+   "rfq": {
+    "id": "rfq-7836bd95",
+    "task": {
+     "kind": "translate",
+     "input": "Good morning. The shipment arrives on Friday and the invoice is attached to this message."
+    },
+    "payer": "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC",
+    "budget": "0.15",
+    "deadlineMs": 30000,
+    "openedAt": 1793219097471
+   },
+   "seq": 15,
+   "at": 1793219097471
+  },
+  {
+   "type": "bid.received",
+   "rfqId": "rfq-7836bd95",
+   "seller": "Quill",
+   "price": "0.02",
+   "etaMs": 4000,
+   "seq": 16,
+   "at": 1793219097505
+  },
+  {
+   "type": "bid.received",
+   "rfqId": "rfq-7836bd95",
+   "seller": "Marrow",
+   "price": "0.05",
+   "etaMs": 2500,
+   "seq": 17,
+   "at": 1793219097505
+  },
+  {
+   "type": "bid.received",
+   "rfqId": "rfq-7836bd95",
+   "seller": "Vesper",
+   "price": "0.09",
+   "etaMs": 1200,
+   "seq": 18,
+   "at": 1793219097505
+  },
+  {
+   "type": "bid.received",
+   "rfqId": "rfq-7836bd95",
+   "seller": "Lex",
+   "price": "0.03",
+   "etaMs": 2000,
+   "seq": 19,
+   "at": 1793219097505
+  },
+  {
+   "type": "bid.rejected",
+   "rfqId": "rfq-7836bd95",
+   "seller": "Sly",
+   "reason": "wrong_payer",
+   "price": "0.01",
+   "seq": 20,
+   "at": 1793219097509
+  },
+  {
+   "type": "bid.rejected",
+   "rfqId": "rfq-7836bd95",
+   "seller": "Fakir",
+   "reason": "invalid_signature",
+   "seq": 21,
+   "at": 1793219097514
+  },
+  {
+   "type": "winner.chosen",
+   "rfqId": "rfq-7836bd95",
+   "seller": "Lex",
+   "price": "0.03",
+   "scores": [
+    {
+     "seller": "Lex",
+     "price": "0.03",
+     "etaMs": 2000,
+     "score": 0.692857142857143,
+     "parts": {
+      "price": 0.8,
+      "speed": 0.7142857142857143,
+      "record": 0.5
+     }
+    },
+    {
+     "seller": "Marrow",
+     "price": "0.05",
+     "etaMs": 2500,
+     "score": 0.5904761904761905,
+     "parts": {
+      "price": 0.6666666666666667,
+      "speed": 0.5357142857142857,
+      "record": 0.5
+     }
+    },
+    {
+     "seller": "Quill",
+     "price": "0.02",
+     "etaMs": 4000,
+     "score": 0.5833333333333334,
+     "parts": {
+      "price": 0.8666666666666667,
+      "speed": 0,
+      "record": 0.5
+     }
+    },
+    {
+     "seller": "Vesper",
+     "price": "0.09",
+     "etaMs": 1200,
+     "score": 0.55,
+     "parts": {
+      "price": 0.4,
+      "speed": 1,
+      "record": 0.5
+     }
+    }
+   ],
+   "seq": 22,
+   "at": 1793219097516
+  },
+  {
+   "type": "payment.sent",
+   "rfqId": "rfq-7836bd95",
+   "seller": "Lex",
+   "hash": "0xa24ac518ed9facdb444fe5ee9f9cda3906a3851d0804ebf3267e2ad80890f3c3",
+   "amount": "0.03",
+   "seq": 23,
+   "at": 1793219097753
+  },
+  {
+   "type": "payment.included",
+   "rfqId": "rfq-7836bd95",
+   "hash": "0xa24ac518ed9facdb444fe5ee9f9cda3906a3851d0804ebf3267e2ad80890f3c3",
+   "seq": 24,
+   "at": 1793219097753
+  },
+  {
+   "type": "work.started",
+   "rfqId": "rfq-7836bd95",
+   "seller": "Lex",
+   "seq": 25,
+   "at": 1793219097759
+  },
+  {
+   "type": "work.delivered",
+   "rfqId": "rfq-7836bd95",
+   "seller": "Lex",
+   "output": "[translated] GOOD MORNING. THE SHIPMENT ARRIVES ON FRIDAY AND THE INVOICE IS ATTACHED TO THIS MES",
+   "seq": 26,
+   "at": 1793219097759
+  },
+  {
+   "type": "result.graded",
+   "rfqId": "rfq-7836bd95",
+   "seller": "Lex",
+   "grade": 0.9509803921568627,
+   "seq": 27,
+   "at": 1793219097759
+  },
+  {
+   "type": "round.ended",
+   "rfqId": "rfq-7836bd95",
+   "status": "delivered",
+   "seq": 28,
+   "at": 1793219097759
+  },
+  {
+   "type": "rfq.opened",
+   "rfq": {
+    "id": "rfq-eda82b73",
+    "task": {
+     "kind": "extract",
+     "input": "Maria Okafor signed the lease for the Lagos warehouse on 3 March, paying a deposit of 4,500 USDT through the escrow contract."
+    },
+    "payer": "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC",
+    "budget": "0.20",
+    "deadlineMs": 30000,
+    "openedAt": 1793219097759
+   },
+   "seq": 29,
+   "at": 1793219097759
+  },
+  {
+   "type": "bid.received",
+   "rfqId": "rfq-eda82b73",
+   "seller": "Quill",
+   "price": "0.02",
+   "etaMs": 4000,
+   "seq": 30,
+   "at": 1793219097781
+  },
+  {
+   "type": "bid.received",
+   "rfqId": "rfq-eda82b73",
+   "seller": "Marrow",
+   "price": "0.05",
+   "etaMs": 2500,
+   "seq": 31,
+   "at": 1793219097781
+  },
+  {
+   "type": "bid.received",
+   "rfqId": "rfq-eda82b73",
+   "seller": "Vesper",
+   "price": "0.09",
+   "etaMs": 1200,
+   "seq": 32,
+   "at": 1793219097781
+  },
+  {
+   "type": "bid.rejected",
+   "rfqId": "rfq-eda82b73",
+   "seller": "Sly",
+   "reason": "wrong_payer",
+   "price": "0.01",
+   "seq": 33,
+   "at": 1793219097785
+  },
+  {
+   "type": "bid.rejected",
+   "rfqId": "rfq-eda82b73",
+   "seller": "Fakir",
+   "reason": "invalid_signature",
+   "seq": 34,
+   "at": 1793219097790
+  },
+  {
+   "type": "winner.chosen",
+   "rfqId": "rfq-eda82b73",
+   "seller": "Marrow",
+   "price": "0.05",
+   "scores": [
+    {
+     "seller": "Marrow",
+     "price": "0.05",
+     "etaMs": 2500,
+     "score": 0.6321428571428571,
+     "parts": {
+      "price": 0.75,
+      "speed": 0.5357142857142857,
+      "record": 0.5
+     }
+    },
+    {
+     "seller": "Vesper",
+     "price": "0.09",
+     "etaMs": 1200,
+     "score": 0.625,
+     "parts": {
+      "price": 0.55,
+      "speed": 1,
+      "record": 0.5
+     }
+    },
+    {
+     "seller": "Quill",
+     "price": "0.02",
+     "etaMs": 4000,
+     "score": 0.6,
+     "parts": {
+      "price": 0.9,
+      "speed": 0,
+      "record": 0.5
+     }
+    }
+   ],
+   "seq": 35,
+   "at": 1793219097791
+  },
+  {
+   "type": "payment.sent",
+   "rfqId": "rfq-eda82b73",
+   "seller": "Marrow",
+   "hash": "0x50db1706a65adeea4d2ffb374fb0e0ae4b5ab916e0f7fa1be7bf521977da8d5d",
+   "amount": "0.05",
+   "seq": 36,
+   "at": 1793219098012
+  },
+  {
+   "type": "payment.included",
+   "rfqId": "rfq-eda82b73",
+   "hash": "0x50db1706a65adeea4d2ffb374fb0e0ae4b5ab916e0f7fa1be7bf521977da8d5d",
+   "seq": 37,
+   "at": 1793219098012
+  },
+  {
+   "type": "work.started",
+   "rfqId": "rfq-eda82b73",
+   "seller": "Marrow",
+   "seq": 38,
+   "at": 1793219098019
+  },
+  {
+   "type": "work.delivered",
+   "rfqId": "rfq-eda82b73",
+   "seller": "Marrow",
+   "output": "[extract] Okafor, signed, warehouse, March,, paying, deposit, through, ",
+   "seq": 39,
+   "at": 1793219098020
+  },
+  {
+   "type": "result.graded",
+   "rfqId": "rfq-eda82b73",
+   "seller": "Marrow",
+   "grade": 0.8068181818181818,
+   "seq": 40,
+   "at": 1793219098020
+  },
+  {
+   "type": "round.ended",
+   "rfqId": "rfq-eda82b73",
+   "status": "delivered",
+   "seq": 41,
+   "at": 1793219098020
+  },
+  {
+   "type": "rfq.opened",
+   "rfq": {
+    "id": "rfq-e35636b0",
+    "task": {
+     "kind": "digest",
+     "input": "Customers praised the new checkout flow, but several reported that the confirmation email arrived late and that refunds took longer than the promised three days."
+    },
+    "payer": "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC",
+    "budget": "0.10",
+    "deadlineMs": 30000,
+    "openedAt": 1793219098020
+   },
+   "seq": 42,
+   "at": 1793219098020
+  },
+  {
+   "type": "bid.received",
+   "rfqId": "rfq-e35636b0",
+   "seller": "Vesper",
+   "price": "0.1",
+   "etaMs": 1800,
+   "seq": 43,
+   "at": 1793219098044
+  },
+  {
+   "type": "bid.received",
+   "rfqId": "rfq-e35636b0",
+   "seller": "Quill",
+   "price": "0.03",
+   "etaMs": 6000,
+   "seq": 44,
+   "at": 1793219098044
+  },
+  {
+   "type": "bid.received",
+   "rfqId": "rfq-e35636b0",
+   "seller": "Marrow",
+   "price": "0.08",
+   "etaMs": 3750,
+   "seq": 45,
+   "at": 1793219098044
+  },
+  {
+   "type": "bid.received",
+   "rfqId": "rfq-e35636b0",
+   "seller": "Lex",
+   "price": "0.06",
+   "etaMs": 4200,
+   "seq": 46,
+   "at": 1793219098048
+  },
+  {
+   "type": "bid.received",
+   "rfqId": "rfq-e35636b0",
+   "seller": "Gist",
+   "price": "0.06",
+   "etaMs": 4200,
+   "seq": 47,
+   "at": 1793219098050
+  },
+  {
+   "type": "winner.chosen",
+   "rfqId": "rfq-e35636b0",
+   "seller": "Gist",
+   "price": "0.06",
+   "scores": [
+    {
+     "seller": "Gist",
+     "price": "0.06",
+     "etaMs": 4200,
+     "score": 0.5764495798319328,
+     "parts": {
+      "price": 0.4,
+      "speed": 0.4285714285714286,
+      "record": 0.9691176470588234
+     }
+    },
+    {
+     "seller": "Lex",
+     "price": "0.06",
+     "etaMs": 4200,
+     "score": 0.5754201680672268,
+     "parts": {
+      "price": 0.4,
+      "speed": 0.4285714285714286,
+      "record": 0.9656862745098038
+     }
+    },
+    {
+     "seller": "Quill",
+     "price": "0.03",
+     "etaMs": 6000,
+     "score": 0.5,
+     "parts": {
+      "price": 0.7,
+      "speed": 0,
+      "record": 0.5
+     }
+    },
+    {
+     "seller": "Marrow",
+     "price": "0.08",
+     "etaMs": 3750,
+     "score": 0.4665746753246753,
+     "parts": {
+      "price": 0.19999999999999996,
+      "speed": 0.5357142857142857,
+      "record": 0.8647727272727272
+     }
+    },
+    {
+     "seller": "Vesper",
+     "price": "0.1",
+     "etaMs": 1800,
+     "score": 0.35,
+     "parts": {
+      "price": 0,
+      "speed": 1,
+      "record": 0.5
+     }
+    }
+   ],
+   "seq": 48,
+   "at": 1793219098052
+  },
+  {
+   "type": "payment.sent",
+   "rfqId": "rfq-e35636b0",
+   "seller": "Gist",
+   "hash": "0xb462fa7a23dd3ac3c2a54b680de067943c40d1be1e49af0dcf55a155b08798a5",
+   "amount": "0.06",
+   "seq": 49,
+   "at": 1793219098096
+  },
+  {
+   "type": "payment.included",
+   "rfqId": "rfq-e35636b0",
+   "hash": "0xb462fa7a23dd3ac3c2a54b680de067943c40d1be1e49af0dcf55a155b08798a5",
+   "seq": 50,
+   "at": 1793219098096
+  },
+  {
+   "type": "work.started",
+   "rfqId": "rfq-e35636b0",
+   "seller": "Gist",
+   "seq": 51,
+   "at": 1793219098102
+  },
+  {
+   "type": "hire.started",
+   "rfqId": "rfq-e35636b0",
+   "from": "Gist",
+   "to": "Lex",
+   "part": "translate",
+   "seq": 52,
+   "at": 1793219098102
+  },
+  {
+   "type": "hire.paid",
+   "rfqId": "rfq-e35636b0",
+   "from": "Gist",
+   "to": "Lex",
+   "hash": "0xf0fdba136ace392c5f7b3899469bdcde8a53338fd2d66e80231c1d384e391a34",
+   "amount": "0.03",
+   "seq": 53,
+   "at": 1793219098370
+  },
+  {
+   "type": "hire.delivered",
+   "rfqId": "rfq-e35636b0",
+   "from": "Gist",
+   "to": "Lex",
+   "seq": 54,
+   "at": 1793219098382
+  },
+  {
+   "type": "work.delivered",
+   "rfqId": "rfq-e35636b0",
+   "seller": "Gist",
+   "output": "[translated] [SUMMARY] CUSTOMERS PRAISED THE NEW CHECKOUT FLOW, BUT SEV",
+   "seq": 55,
+   "at": 1793219098382
+  },
+  {
+   "type": "result.graded",
+   "rfqId": "rfq-e35636b0",
+   "seller": "Gist",
+   "grade": 0.922077922077922,
+   "seq": 56,
+   "at": 1793219098382
+  },
+  {
+   "type": "round.ended",
+   "rfqId": "rfq-e35636b0",
+   "status": "delivered",
+   "seq": 57,
+   "at": 1793219098382
+  },
+  {
+   "type": "payment.final",
+   "rfqId": "rfq-eda82b73",
+   "hash": "0x50db1706a65adeea4d2ffb374fb0e0ae4b5ab916e0f7fa1be7bf521977da8d5d",
+   "seq": 58,
+   "at": 1793219098422
+  },
+  {
+   "type": "payment.final",
+   "rfqId": "rfq-77777ee9",
+   "hash": "0x5f13cad7734df7b5f0cbdf4260faa0b490f8e473716e4efd6a5f2c32e9951415",
+   "seq": 59,
+   "at": 1793219098464
+  },
+  {
+   "type": "payment.final",
+   "rfqId": "rfq-e35636b0",
+   "hash": "0xb462fa7a23dd3ac3c2a54b680de067943c40d1be1e49af0dcf55a155b08798a5",
+   "seq": 60,
+   "at": 1793219098505
+  },
+  {
+   "type": "payment.final",
+   "rfqId": "rfq-7836bd95",
+   "hash": "0xa24ac518ed9facdb444fe5ee9f9cda3906a3851d0804ebf3267e2ad80890f3c3",
+   "seq": 61,
+   "at": 1793219098795
+  }
+ ]
+}
