@@ -57,6 +57,8 @@ function parseRoundRequest(body: unknown): { task: Task; budget: string } | null
   return { task: { kind: task.kind as TaskKind, input: task.input }, budget };
 }
 
+const LOCAL_HOST = /^(127\.0\.0\.1|localhost|\[::1\])(:\d+)?$/;
+
 function readJson(req: http.IncomingMessage): Promise<unknown> {
   return new Promise((resolveBody, reject) => {
     let size = 0;
@@ -109,6 +111,17 @@ export function createServer(deps: ServerDeps): http.Server {
   async function handle(req: http.IncomingMessage, res: http.ServerResponse): Promise<void> {
     const { pathname } = new URL(req.url ?? "/", "http://localhost");
     const post = req.method === "POST";
+
+    // This server only listens on this machine, but any web page the owner opens can still aim at it.
+    // A page cannot choose its Host (DNS rebinding changes the name, not the machine), cannot hide its
+    // Origin, and cannot send application/json to another site without asking first.
+    const host = req.headers.host ?? "";
+    if (!LOCAL_HOST.test(host)) return send(res, 403, { error: "unexpected host" });
+    if (post) {
+      const origin = req.headers.origin;
+      if (origin !== undefined && origin !== `http://${host}`) return send(res, 403, { error: "request from another origin" });
+      if (!/^application\/json\b/i.test(req.headers["content-type"] ?? "")) return send(res, 415, { error: "send application/json" });
+    }
 
     if (pathname === "/api/events" && req.method === "GET") {
       res.writeHead(200, { "content-type": "text/event-stream", "cache-control": "no-cache", connection: "keep-alive" });

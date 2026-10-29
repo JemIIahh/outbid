@@ -5,6 +5,7 @@ import { scoreBids, type ReputationBook } from "../agents/scoring.js";
 import type { Seller } from "../agents/seller.js";
 import type { Grader } from "../skills/skill.js";
 import type { Bus } from "./events.js";
+import { describeError } from "./errors.js";
 import type { Bid, BidRejection, Rfq, Task } from "./types.js";
 
 export type ArenaContext = {
@@ -138,7 +139,7 @@ export async function runRound(ctx: ArenaContext, req: { task: Task; budget: str
       bus.emit({ type: "round.ended", rfqId: rfq.id, status: "delivered" });
       return { rfqId: rfq.id, status: "delivered", winner: winner.name, hash, grade };
     } catch (error) {
-      return abort(ctx, rfq.id, error instanceof Error ? error.message : String(error), winner.name);
+      return abort(ctx, rfq.id, describeError(error), winner.name);
     }
   }
 
@@ -181,8 +182,8 @@ async function attemptPayment(ctx: ArenaContext, bid: Bid): Promise<Attempt> {
       const paid = await ctx.buyer.invoices.pay(bid.invoice, { funding: "policy", policyId: ctx.policyId, maxDebit: bid.price });
       if (paid.status === "confirmed" && paid.hash) return { kind: "paid", hash: paid.hash };
     } catch (error) {
-      if (error instanceof RemessoError && NOTHING_PAID.has(error.code)) return { kind: "refused", reason: error.message };
-      return { kind: "uncertain", reason: `payment_uncertain: ${error instanceof Error ? error.message : String(error)}` };
+      if (error instanceof RemessoError && NOTHING_PAID.has(error.code)) return { kind: "refused", reason: describeError(error) };
+      return { kind: "uncertain", reason: `payment_uncertain: ${describeError(error)}` };
     }
     if (n < PENDING_ATTEMPTS) await new Promise((r) => setTimeout(r, ctx.pendingRetryMs ?? 1000));
   }

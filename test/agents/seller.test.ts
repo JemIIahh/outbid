@@ -1,7 +1,7 @@
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { createBus } from "../../src/arena/events.js";
 import type { Rfq, Task, TaskKind } from "../../src/arena/types.js";
-import { createSeller, SellerError } from "../../src/agents/seller.js";
+import { createSeller, SellerError, type Seller } from "../../src/agents/seller.js";
 import { startArena, type ArenaEnv } from "../../src/chain/env.js";
 import { stubSkill, type Skill } from "../../src/skills/skill.js";
 
@@ -166,5 +166,77 @@ describe("seller agent", () => {
 
     await expect(seller.fulfil(bid, { txHash: paid.hash!, policyId: env.policyId })).rejects.toMatchObject({ code: "not_final" });
     expect(skill.calls).toBe(0);
+  });
+  it("refuses a payment of an invoice that someone else issued, even though it is genuinely paid", async () => {
+    const skill = countingSkill("translate");
+    const seller = createSeller({
+      name: "quill",
+      remesso: env.sellers[0]!.remesso,
+      skills: [skill],
+      priceUsd: () => "0.05",
+      etaMs: 2000,
+      bus: createBus(),
+    });
+    const bid = (await seller.bid(rfq("translate", "0.40")))!;
+    // A different seller's invoice, for one cent, paid for real: it settles, but not to this seller.
+    const foreign = await env.sellers[1]!.remesso.invoices.sign({
+      payer: env.owner.address,
+      amount: "0.01",
+      token: "USDT",
+      orderId: "someone-elses-order",
+      expiresAt: Math.floor(Date.now() / 1000) + 120,
+    });
+    const paid = await env.buyer.remesso.invoices.pay(foreign, { funding: "policy", policyId: env.policyId, maxDebit: "0.01" });
+
+    const attempt = seller.fulfil({ ...bid, invoice: foreign }, { txHash: paid.hash!, policyId: env.policyId });
+
+    await expect(attempt).rejects.toMatchObject({ name: "SellerError", code: "wrong_order" });
+    expect(skill.calls).toBe(0);
+  });
+
+  it("refuses a cheap order's payment presented for a dearer order", async () => {
+    const skill = countingSkill("translate");
+    const seller = createSeller({
+      name: "marrow",
+      remesso: env.sellers[1]!.remesso,
+      skills: [skill],
+      priceUsd: (task) => (task.input === "short" ? "0.02" : "0.09"),
+      etaMs: 2000,
+      bus: createBus(),
+    });
+    const cheap = (await seller.bid({ ...rfq("translate", "0.40"), task: { kind: "translate", input: "short" } }))!;
+    const dear = (await seller.bid(rfq("translate", "0.40")))!;
+    const paid = await env.buyer.remesso.invoices.pay(cheap.invoice, { funding: "policy", policyId: env.policyId, maxDebit: cheap.price });
+
+    const attempt = seller.fulfil({ ...dear, invoice: cheap.invoice }, { txHash: paid.hash!, policyId: env.policyId });
+
+    await expect(attempt).rejects.toMatchObject({ code: "wrong_order" });
+    expect(skill.calls).toBe(0);
+  });
+
+  it.each([
+    ["a lowered price on the bid", { price: "0.01" }, {}],
+    ["an 'included' hint from the caller", {}, { finality: "included" }],
+  ])("a dear job still waits for finalization despite %s", async (_name, bidChange, evidenceChange) => {
+    const skill = countingSkill("translate");
+    const seller: Seller = createSeller({
+      name: "quill",
+      remesso: env.sellers[0]!.remesso,
+      skills: [skill],
+      priceUsd: () => "0.12",
+      etaMs: 2000,
+      bus: createBus(),
+      finalityPollMs: 50,
+    });
+    const bid = (await seller.bid(rfq("translate", "0.40")))!;
+    const paid = await env.buyer.remesso.invoices.pay(bid.invoice, { funding: "policy", policyId: env.policyId, maxDebit: bid.price });
+
+    const delivery = seller.fulfil({ ...bid, ...bidChange }, { txHash: paid.hash!, policyId: env.policyId, ...evidenceChange } as Parameters<Seller["fulfil"]>[1]);
+    await new Promise((r) => setTimeout(r, 300));
+    expect(skill.calls).toBe(0);
+
+    await env.mine(64);
+    await expect(delivery).resolves.toMatchObject({ seller: "quill" });
+    expect(skill.calls).toBe(1);
   });
 });

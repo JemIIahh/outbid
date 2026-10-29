@@ -129,6 +129,50 @@ describe("control routes", () => {
   });
 });
 
+/** A raw request, so a test can set the Host and Origin headers a browser would. */
+function raw(base: string, method: string, path: string, headers: Record<string, string>, body = "") {
+  const { port } = new URL(base);
+  return new Promise<number>((resolve, reject) => {
+    const req = http.request({ host: "127.0.0.1", port, method, path, headers }, (res) => (res.resume(), resolve(res.statusCode ?? 0)));
+    req.on("error", reject);
+    req.end(body);
+  });
+}
+
+describe("requests from other websites", () => {
+  const round = JSON.stringify({ task: { kind: "extract", input: "x" }, budget: "0.20" });
+  const json = { "content-type": "application/json" };
+
+  it("refuses a page from another origin and starts nothing", async () => {
+    const { base, deps } = await start();
+    expect(await raw(base, "POST", "/api/rounds", { ...json, origin: "https://evil.example" }, round)).toBe(403);
+    expect(await raw(base, "POST", "/api/revoke", { ...json, origin: "https://evil.example" }, "{}")).toBe(403);
+    expect(deps.startRound).not.toHaveBeenCalled();
+    expect(deps.revoke).not.toHaveBeenCalled();
+  });
+
+  it("refuses a body that is not declared JSON, which a page can send without asking first", async () => {
+    const { base, deps } = await start();
+    expect(await raw(base, "POST", "/api/rounds", { "content-type": "text/plain" }, round)).toBe(415);
+    expect(deps.startRound).not.toHaveBeenCalled();
+  });
+
+  it("refuses a Host that is not this machine, which is how DNS rebinding arrives", async () => {
+    const { base, deps } = await start();
+    expect(await raw(base, "POST", "/api/rounds", { ...json, host: "evil.example" }, round)).toBe(403);
+    expect(await raw(base, "GET", "/api/state", { host: "evil.example" })).toBe(403);
+    expect(deps.startRound).not.toHaveBeenCalled();
+  });
+
+  it("still accepts the page's own requests", async () => {
+    const { base, deps } = await start();
+    const { port } = new URL(base);
+    expect(await raw(base, "POST", "/api/rounds", { ...json, origin: `http://127.0.0.1:${port}` }, round)).toBe(202);
+    expect(await raw(base, "POST", "/api/rounds", { ...json, host: `localhost:${port}`, origin: `http://localhost:${port}` }, round)).toBe(202);
+    expect(deps.startRound).toHaveBeenCalledTimes(2);
+  });
+});
+
 describe("static files", () => {
   it("serves the web root and refuses to leave it", async () => {
     const webRoot = await mkdtemp(join(tmpdir(), "outbid-web-"));

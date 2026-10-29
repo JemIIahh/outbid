@@ -111,4 +111,19 @@ describe("payment fallback", () => {
     expect(calls).toBe(1);
     expect(types(bus)).not.toContain("payment.refused");
   });
+
+  it("keeps an RPC address and its key out of the event feed when a payment fails", async () => {
+    const bus = createBus();
+    const only = stubSeller(env, 1, bus, { price: "0.04", etaMs: 1000 });
+    const pay = (async () => {
+      throw new RemessoError("timeout", "HTTP request failed.\n\nURL: https://celo.example.com/v2/SECRETKEY\nRequest body: {}");
+    }) as unknown as Pay;
+
+    const ctx = contextFor(env, bus, [only], { buyer: withPay(env.buyer.remesso, pay) });
+    const result = await runRound(ctx, { task: sampleTask(), budget: "0.40" });
+
+    expect(result.status).toBe("aborted");
+    expect(JSON.stringify(bus.history())).not.toContain("SECRETKEY");
+    expect(result.reason).toMatch(/payment_uncertain: HTTP request failed/);
+  });
 });

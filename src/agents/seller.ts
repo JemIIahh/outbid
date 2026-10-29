@@ -1,4 +1,4 @@
-import { RemessoError, token, toUnits, type Remesso } from "remesso-sdk";
+import { RemessoError, token, toUnits, type Remesso, type SignedInvoice } from "remesso-sdk";
 import type { Address, Hex } from "viem";
 import type { Bus } from "../arena/events.js";
 import { DIGEST_PARTS, type Bid, type Delivery, type Rfq, type Task, type TaskKind } from "../arena/types.js";
@@ -95,10 +95,11 @@ export interface Seller {
   /** Null when the kind is unsupported or the price is above the RFQ budget. */
   bid(rfq: Rfq): Promise<Bid | null>;
   /**
-   * `quiet` keeps the work events off the bus, so a hired partner's work does not look like the
-   * winner's delivery.
+   * Delivers only against an invoice this seller signed. `finality: "finalized"` asks for more care
+   * than the price needs; it cannot ask for less. `quiet` keeps the work events off the bus, so a
+   * hired partner's work does not look like the winner's delivery.
    */
-  fulfil(bid: Bid, evidence: { txHash: Hex; policyId: bigint; finality?: "included" | "finalized"; quiet?: boolean }): Promise<Delivery>;
+  fulfil(bid: Bid, evidence: { txHash: Hex; policyId: bigint; finality?: "finalized"; quiet?: boolean }): Promise<Delivery>;
 }
 
 export function createSeller(cfg: SellerConfig): Seller {
@@ -107,7 +108,8 @@ export function createSeller(cfg: SellerConfig): Seller {
   const usdt = token("USDT");
   const claims = cfg.claims ?? memoryClaimStore();
   const ttl = cfg.bidTtlSeconds ?? 120;
-  const tasks = new Map<string, Task>();
+  /** Every invoice this seller signed, by signature: the only terms it will deliver against, whatever a caller sends later. */
+  const issued = new Map<Hex, { rfqId: string; task: Task; price: string; invoice: SignedInvoice }>();
 
   const ownSkill = (kind: TaskKind) => cfg.skills.find((s) => s.kind === kind);
   if (cfg.hires && !ownSkill(cfg.hires.own)) throw new Error(`seller ${cfg.name} hires for a digest but has no ${cfg.hires.own} skill`);
@@ -164,7 +166,7 @@ export function createSeller(cfg: SellerConfig): Seller {
     cfg.bus.emit({ type: "hire.paid", rfqId, from: cfg.name, to: partner.name, hash, amount: verified.amountDecimal });
 
     const delivery = await withTimeout(
-      partner.fulfil({ ...bid, price: verified.amountDecimal }, { txHash: hash, policyId: plan.spend.policyId, finality: "included", quiet: true }),
+      partner.fulfil({ ...bid, price: verified.amountDecimal }, { txHash: hash, policyId: plan.spend.policyId, quiet: true }),
       limit,
       `${partner.name}'s delivery`,
     ).catch((cause: unknown) => {
@@ -203,23 +205,28 @@ export function createSeller(cfg: SellerConfig): Seller {
         orderId: `${rfq.id}:${cfg.name}`,
         expiresAt: Math.floor(Date.now() / 1000) + ttl,
       });
-      tasks.set(rfq.id, rfq.task);
+      issued.set(invoice.signature, { rfqId: rfq.id, task: rfq.task, price, invoice });
       const hiring = cfg.hires && cfg.hires.kind === rfq.task.kind && !ownSkill(rfq.task.kind);
       const etaMs = hiring ? cfg.etaMs + cfg.hires!.partner().etaMs : (cfg.etaFor?.(rfq.task) ?? cfg.etaMs);
       return { rfqId: rfq.id, seller: cfg.name, sellerAddress: address, price, etaMs, invoice };
     },
 
     async fulfil(bid, evidence) {
-      const task = tasks.get(bid.rfqId);
-      const skill = task && ownSkill(task.kind);
-      const plan = task && !skill && cfg.hires?.kind === task.kind ? cfg.hires : undefined;
-      if (!task || (!skill && !plan)) throw new SellerError("wrong_order", `no open order for ${bid.rfqId}`);
+      // The caller's bid only points at an order. Task, price and invoice come from what this seller signed,
+      // so a payment of someone else's invoice, or of a cheaper order's, cannot buy this order.
+      const order = issued.get(bid.invoice.signature);
+      if (!order || order.rfqId !== bid.rfqId) throw new SellerError("wrong_order", `no open order for ${bid.rfqId}`);
+      const { task } = order;
+      const skill = ownSkill(task.kind);
+      const plan = !skill && cfg.hires?.kind === task.kind ? cfg.hires : undefined;
+      if (!skill && !plan) throw new SellerError("wrong_order", `no open order for ${bid.rfqId}`);
 
-      const finality =
-        evidence.finality ?? (toUnits(bid.price, usdt) <= toUnits(INCLUDED_MAX, usdt) ? "included" : "finalized");
+      // A dear job waits for finality. The caller can ask for more care, never less.
+      const dear = toUnits(order.price, usdt) > toUnits(INCLUDED_MAX, usdt);
+      const finality = dear || evidence.finality === "finalized" ? "finalized" : "included";
 
       const check = (level: "included" | "finalized") =>
-        cfg.remesso.invoices.verifyPayment(bid.invoice, {
+        cfg.remesso.invoices.verifyPayment(order.invoice, {
           txHash: evidence.txHash,
           policyId: evidence.policyId,
           finality: level,
