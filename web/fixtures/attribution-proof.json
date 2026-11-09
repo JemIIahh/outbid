@@ -2,13 +2,13 @@
   "chainId": 42220,
   "agentId": "10065",
   "wallet": "0x66CAF354261caFe339118c6Ce7aF30084416c327",
-  "assignedTag": "celo_f383156af981",
+  "assignedTag": "celo_11ffb74cf1fb",
   "codes": [
-    "celo_f383156af981",
+    "celo_11ffb74cf1fb",
     "celo_66c20e3501f3"
   ],
-  "transactionHash": "0x133fa7c0231920f808ef3647ba1da4a55a8637fad2889b4a84dfba4e977927f9",
-  "blockNumber": "82315764",
+  "transactionHash": "0x69794450349f29c41f51c32a0b9360141774e075aef021ab17e12915b21c8b76",
+  "blockNumber": "82317577",
   "verified": true,
-  "recordedAt": "2026-11-09T09:28:43.383Z"
+  "recordedAt": "2026-11-09T10:02:38.571Z"
 }

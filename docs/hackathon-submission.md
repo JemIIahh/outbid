@@ -8,7 +8,7 @@ Agent wallet: `0x66CAF354261caFe339118c6Ce7aF30084416c327`
 
 Live demo: https://outbid-silk.vercel.app
 
-Assigned Loops attribution tag: `celo_f383156af981`
+Assigned Loops attribution tag: `celo_11ffb74cf1fb`
 
 ## Description
 
@@ -34,7 +34,7 @@ Cencori inference, purchased through `https://gateway.usebuy.ai/cencori/v1/chat/
 - ERC-8004 agent **10065**, registered from the buyer wallet: [registration transaction](https://celoscan.io/tx/0x24e0183be0167d25540c07f498b4da35d585f42a1879484e3d90968c0bc40e05). Registry: `0x8004A169FB4a3325136EB29fA0ceB6D2e539a432`. Both `ownerOf(10065)` and `getAgentWallet(10065)` were checked against the buyer wallet.
 - Cencori inference purchased through buy for **0.01 USDC**: [settlement transaction](https://celoscan.io/tx/0x546da1fedd30ade8578b9f7a2966310ea4307b6755e0ce524d5cb876b2062374). The proof runner verified transaction success and the USDC `Transfer` event's sender, recipient and amount on Celo mainnet.
 - Service recipient: `0x20faAca5F980E29639A0FCC6dcA6988E18ed333B`.
-- The Loops-assigned attribution tag was added in a later [identity metadata transaction](https://celoscan.io/tx/0x133fa7c0231920f808ef3647ba1da4a55a8637fad2889b4a84dfba4e977927f9). Its calldata was decoded and verified to include `celo_f383156af981`. This does not retroactively tag the earlier registration or the x402 settlement. See [attribution evidence](../web/fixtures/attribution-proof.json).
+- The Loops-assigned attribution tag was added in a later [identity metadata transaction](https://celoscan.io/tx/0x69794450349f29c41f51c32a0b9360141774e075aef021ab17e12915b21c8b76). Its calldata was decoded and verified to include `celo_11ffb74cf1fb`. This does not retroactively tag the earlier registration or the x402 settlement. See [attribution evidence](../web/fixtures/attribution-proof.json).
 - Registration recorded at `2026-11-09T09:11:17.075Z`; paid task recorded at `2026-11-09T09:11:41.529Z`. These are the actual execution times. The live Loops event API reports an extended submission deadline of `2026-11-09T12:30:00.000Z`.
 - Evidence files: [registration](../web/fixtures/agent-registration.json) and [paid inference](../web/fixtures/buy-proof.json). The complete quote and service response are preserved, without private keys or signed payment authorizations.
 - Balance reduction for registration plus the paid call, before the later attribution update: **0.019072 USDC**; buyer balance at that point: **0.080928 USDC**.

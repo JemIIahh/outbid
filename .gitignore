@@ -8,3 +8,4 @@ state/
 .DS_Store
 .superpowers/
 .vercel/
+artifacts/
