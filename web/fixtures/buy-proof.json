@@ -1,0 +1,46 @@
+{
+  "id": "355c79db-b2d4-41be-9d55-619bcb8e9d19",
+  "createdAt": "2026-11-09T09:11:30.818Z",
+  "payer": "0x66CAF354261caFe339118c6Ce7aF30084416c327",
+  "chainId": 42220,
+  "quote": {
+    "capability": "cencori/inference",
+    "url": "https://gateway.usebuy.ai/cencori/v1/chat/completions",
+    "token": "USDC",
+    "amountAtomic": "10000",
+    "payTo": "0x20faAca5F980E29639A0FCC6dcA6988E18ed333B",
+    "body": "{\"model\":\"maximo-atlas-1.3\",\"max_tokens\":1024,\"messages\":[{\"role\":\"system\",\"content\":\"Summarize the user's text in one or two sentences. Reply with the summary only.\"},{\"role\":\"user\",\"content\":\"Customers praised the new checkout flow, but several reported that confirmation emails arrived late and refunds took longer than the promised three days. The operations team needs a concise summary before its weekly meeting.\"}]}",
+    "bodySha256": "501a24365d27a82844f7e5c8ada8117b7fadaa07699d76f29c7674f5b321a31d"
+  },
+  "status": "delivered",
+  "receipt": {
+    "url": "https://gateway.usebuy.ai/cencori/v1/chat/completions",
+    "network": "celo",
+    "asset": "0xcebA9300f2b948710d2653dD7B07f33A8B32118C",
+    "amount": "10000",
+    "scheme": "exact",
+    "txHash": "0x546da1fedd30ade8578b9f7a2966310ea4307b6755e0ce524d5cb876b2062374",
+    "status": 200,
+    "outcome": "confirmed",
+    "authorization": {
+      "from": "0x66CAF354261caFe339118c6Ce7aF30084416c327",
+      "nonce": "0xca6e619a7978ea487d7451f649fbc53b1ef5cfa5a0eaefb0c4273d924d4e33b1",
+      "validAfter": "0",
+      "validBefore": "1794215551"
+    },
+    "timestamp": "2026-11-09T09:11:40.506Z"
+  },
+  "response": {
+    "status": 200,
+    "body": "{\"id\":\"chatcmpl-1lktqlufg\",\"object\":\"chat.completion\",\"created\":1794215500,\"model\":\"maximo-atlas-1.4\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"Customers responded positively to the new checkout flow, but reported late confirmation emails and refunds exceeding the promised three-day window; the operations team needs a brief overview ahead of its weekly meeting.\"},\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":131,\"completion_tokens\":56,\"total_tokens\":187},\"safety\":{\"scanned\":false}}",
+    "correlationId": null
+  },
+  "recordedAt": "2026-11-09T09:11:41.529Z",
+  "task": {
+    "kind": "summarize",
+    "input": "Customers praised the new checkout flow, but several reported that confirmation emails arrived late and refunds took longer than the promised three days. The operations team needs a concise summary before its weekly meeting."
+  },
+  "output": "Customers responded positively to the new checkout flow, but reported late confirmation emails and refunds exceeding the promised three-day window; the operations team needs a brief overview ahead of its weekly meeting.",
+  "settlementVerified": true,
+  "settlementBlock": "82314736"
+}

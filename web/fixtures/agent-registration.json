@@ -1,0 +1,25 @@
+{
+  "chainId": 42220,
+  "registry": "0x8004A169FB4a3325136EB29fA0ceB6D2e539a432",
+  "agentId": "10065",
+  "wallet": "0x66CAF354261caFe339118c6Ce7aF30084416c327",
+  "transactionHash": "0x24e0183be0167d25540c07f498b4da35d585f42a1879484e3d90968c0bc40e05",
+  "builderCodes": [
+    "celo_66c20e3501f3"
+  ],
+  "metadata": {
+    "type": "https://eips.ethereum.org/EIPS/eip-8004#registration-v1",
+    "name": "Outbid",
+    "description": "A buyer agent selects signed bids from specialist agents, pays under an onchain USDT spending policy on Celo, and verifies payment before delivery. Sellers can subcontract work; paid inference is purchased through buy.",
+    "services": [
+      {
+        "name": "web",
+        "endpoint": "https://github.com/JemIIahh/outbid"
+      }
+    ],
+    "active": true,
+    "x402Support": false,
+    "supportedTrust": []
+  },
+  "recordedAt": "2026-11-09T09:11:17.075Z"
+}

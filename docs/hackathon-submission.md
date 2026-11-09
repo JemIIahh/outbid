@@ -25,4 +25,13 @@ Cencori inference, purchased through `https://gateway.usebuy.ai/cencori/v1/chat/
 - A demo of the auction UI (`pnpm demo`, or the recorded `?replay` view).
 - The actual hackathon attribution code assigned to this entry.
 
+## Recorded Celo mainnet evidence
+
+- ERC-8004 agent **10065**, registered from the buyer wallet: [registration transaction](https://celoscan.io/tx/0x24e0183be0167d25540c07f498b4da35d585f42a1879484e3d90968c0bc40e05). Registry: `0x8004A169FB4a3325136EB29fA0ceB6D2e539a432`. Both `ownerOf(10065)` and `getAgentWallet(10065)` were checked against the buyer wallet.
+- Cencori inference purchased through buy for **0.01 USDC**: [settlement transaction](https://celoscan.io/tx/0x546da1fedd30ade8578b9f7a2966310ea4307b6755e0ce524d5cb876b2062374). The proof runner verified transaction success and the USDC `Transfer` event's sender, recipient and amount on Celo mainnet.
+- Service recipient: `0x20faAca5F980E29639A0FCC6dcA6988E18ed333B`.
+- Registration recorded at `2026-11-09T09:11:17.075Z`; paid task recorded at `2026-11-09T09:11:41.529Z`. These are the actual execution times. The live Loops event API reports an extended submission deadline of `2026-11-09T12:30:00.000Z`.
+- Evidence files: [registration](../web/fixtures/agent-registration.json) and [paid inference](../web/fixtures/buy-proof.json). The complete quote and service response are preserved, without private keys or signed payment authorizations.
+- Total balance reduction for registration plus the paid call: **0.019072 USDC**; remaining buyer balance after both actions: **0.080928 USDC**.
+
 If a generated evidence file is absent, that action has not been recorded. Do not submit placeholder IDs or claim an unperformed transaction. The public repository was started October 28, 2026, during the event window. No independent-user or organic-volume claim is made.

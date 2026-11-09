@@ -28,6 +28,8 @@ Gas on Celo is paid in USDT, so USDT is all any address needs. `pnpm proof` refu
 
 ## Agents on Open Rails: Build with buy
 
+Recorded on Celo mainnet: **ERC-8004 agent #10065** ([registration](https://celoscan.io/tx/0x24e0183be0167d25540c07f498b4da35d585f42a1879484e3d90968c0bc40e05)) and a **0.01 USDC Cencori inference payment through buy** ([settlement](https://celoscan.io/tx/0x546da1fedd30ade8578b9f7a2966310ea4307b6755e0ce524d5cb876b2062374)). The paid task returned an actual customer-feedback summary. Its USDC transfer was verified against the receipt on Celo mainnet. This proof covers paid seller inference; the auction replay remains a local-fork demonstration.
+
 USDC is also supported for buy payments and registration fees: set `OUTBID_BUY_TOKEN=USDC` before previewing or executing either command. Both tokens use the same 0.01 payment and 0.05 registration fee caps, denominated in the selected token. Obtain approval for the selected token before executing. The existing Remesso auction settlement remains in USDT.
 
 Outbid can purchase Cencori inference through [buy](https://usebuy.ai) for the same summarization, translation and extraction skills used by its sellers. No Cencori API key is needed. Set `OUTBID_LLM_PROVIDER=buy` to select it instead of the API-key providers. Each call discovers the live catalog and quotes the exact request before paying. The hard cap is 0.01 USDT per call, with at most five calls per process by default (`OUTBID_BUY_MAX_CALLS`, maximum ten). Enable spending only after reviewing the quote with `OUTBID_BUY_CONFIRM_SPEND=yes`. Paid failures stop further calls; there are no automatic paid retries.
