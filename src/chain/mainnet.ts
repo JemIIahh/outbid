@@ -6,6 +6,7 @@ import { CELO_MAINNET, preflight } from "../live.js";
 import { AGENT_INDEX_BASE, type ChainEnv, type Spend, type Wallet } from "./env.js";
 import { requiredFunding, shortfalls, type FundingWallets } from "./funding.js";
 import { createPolicies, type PolicyStep } from "./policies.js";
+import { builderCodes } from "./attribution.js";
 
 /** What the buyer may spend in the real-money run: nothing above 0.10 at a time, nothing above 1.00 in all. */
 const BUYER_POLICY = { perPayment: "0.10", perDay: "1.00", days: 1, budget: "1" } as const;
@@ -68,7 +69,7 @@ export async function startMainnet(env: Record<string, string | undefined>, opts
   const short = shortfalls(rows, (a) => balances.get(a) ?? 0n);
   if (short.length) throw new Error(`not starting on mainnet: underfunded (run pnpm funding): ${short.map((r) => `${r.role} is ${r.missing} short`).join(", ")}`);
 
-  const client = (account: PrivateKeyAccount | HDAccount): Remesso => createRemesso({ account, rpcUrl });
+  const client = (account: PrivateKeyAccount | HDAccount): Remesso => createRemesso({ account, rpcUrl, builderCodes: builderCodes(env) });
   const wallet = (name: string, account: PrivateKeyAccount | HDAccount): Wallet => ({ name, address: account.address, remesso: client(account) });
   const owner = wallet("owner", keys.owner);
   const buyer = wallet("buyer", keys.buyer);

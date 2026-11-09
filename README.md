@@ -25,3 +25,21 @@ pnpm proof         # three small auctions with Claude agents, one with a hire; w
 ```
 
 Gas on Celo is paid in USDT, so USDT is all any address needs. `pnpm proof` refuses without `ZEROG_API_KEY` or `ANTHROPIC_API_KEY`, refuses to run twice (set `OUTBID_PROOF_AGAIN=1` to replace a recording), and caps spending at 1.00 USDT through the on-chain policy. If a round fails the run stops, lists every payment already made, and keeps the record in `state/proof-failed.json`. When it ends it revokes the spending limits it created. Open the page with `?proof` to see the recording with every payment linked to Celoscan.
+
+## Agents on Open Rails: Build with buy
+
+Outbid can purchase Cencori inference through [buy](https://usebuy.ai) for the same summarization, translation and extraction skills used by its sellers. No Cencori API key is needed. Set `OUTBID_LLM_PROVIDER=buy` to select it instead of the API-key providers. Each call discovers the live catalog and quotes the exact request before paying. The hard cap is 0.01 USDT per call, with at most five calls per process by default (`OUTBID_BUY_MAX_CALLS`, maximum ten). Enable spending only after reviewing the quote with `OUTBID_BUY_CONFIRM_SPEND=yes`. Paid failures stop further calls; there are no automatic paid retries.
+
+```sh
+pnpm buy:proof             # free exact quote for a seller's customer-feedback summary
+pnpm agent:register        # read-only preview of Celo ERC-8004 registration
+# After funding OUTBID_BUYER_KEY's address and explicitly approving spending:
+pnpm agent:register --execute  # requires OUTBID_REGISTER_CONFIRM=yes; network fee cap 0.05 USDT
+pnpm buy:proof --execute       # one call only, requires OUTBID_BUY_CONFIRM_SPEND=yes
+```
+
+The scripts use the buyer wallet for both identity and buy payments. Registration embeds immutable `data:` metadata and writes `web/fixtures/agent-registration.json`. The paid task writes its complete response, quote and settlement receipt to `web/fixtures/buy-proof.json`; private recovery records stay under ignored `state/`. The proof script refuses repeat attempts for the same request, including an interrupted attempt. A successful inference proof demonstrates paid seller work; it does not claim that the complete auction ran on mainnet or that demo wallets are independent customers.
+
+Set `OUTBID_ATTRIBUTION_CODE` to the code assigned to your hackathon entry. Remesso receives that code and the repository-derived `celo_66c20e3501f3` through its supported `builderCodes` option. Registration is tagged too. A derived code alone does not establish enrollment. The event's current buy/x402 exception uses payment evidence instead of requiring a client-generated settlement tag.
+
+See [submission notes](docs/hackathon-submission.md) for the entry description and evidence checklist. Generated proof files appear only after real, successful mainnet actions; a missing file means that evidence has not been recorded.

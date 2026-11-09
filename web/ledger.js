@@ -162,7 +162,7 @@ function renderBar() {
   const net = $("#net");
   net.textContent = !onMainnet() ? "Practice chain, no real money" : S.proof ? "Verified on Celo mainnet" : "Celo mainnet, real money";
   net.className = `pill ${!onMainnet() ? "" : S.proof ? "proof" : "live"}`;
-  $("#mode").textContent = S.agents === "claude" ? "Claude agents" : "Stand-in agents";
+  $("#mode").textContent = S.agents === "claude" ? "AI agents" : "Stand-in agents";
   const used = spent();
   $("#g-used").textContent = money(used);
   $("#g-of").textContent = `of ${money(S.policy.perDay)} today`;

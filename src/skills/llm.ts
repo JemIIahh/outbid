@@ -1,9 +1,10 @@
 import Anthropic from "@anthropic-ai/sdk";
+import { buyChat, BUY_MODEL } from "./buy.js";
 
 /** One question to a language model, answered in text. */
 export type Chat = (o: { model: string; system: string; content: string; maxTokens: number }) => Promise<string>;
 
-export type Llm = { chat: Chat; provider: "0g" | "anthropic"; fast: string; strong: string };
+export type Llm = { chat: Chat; provider: "0g" | "anthropic" | "buy"; fast: string; strong: string };
 
 export const ZEROG_ROUTER_URL = "https://router-api.0g.ai/v1";
 
@@ -51,6 +52,7 @@ export function routerChat(o: { apiKey: string; baseUrl?: string; timeoutMs?: nu
 
 /** The 0G Router when ZEROG_API_KEY is set, else Anthropic when ANTHROPIC_API_KEY is, else nothing. */
 export function llmFromEnv(env: NodeJS.ProcessEnv): Llm | undefined {
+  if (env.OUTBID_LLM_PROVIDER === "buy") return { provider: "buy", chat: buyChat(env), fast: BUY_MODEL, strong: BUY_MODEL };
   const zerog = env.ZEROG_API_KEY?.trim();
   if (zerog) {
     const baseUrl = env.ZEROG_BASE_URL?.trim() || undefined;
