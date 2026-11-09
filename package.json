@@ -13,7 +13,8 @@
     "funding": "tsx --env-file-if-exists=.env scripts/funding.ts",
     "proof": "tsx --env-file-if-exists=.env scripts/proof.ts",
     "buy:proof": "tsx --env-file-if-exists=.env scripts/buy-proof.ts",
-    "agent:register": "tsx --env-file-if-exists=.env scripts/register-agent.ts"
+    "agent:register": "tsx --env-file-if-exists=.env scripts/register-agent.ts",
+    "agent:tag": "tsx --env-file-if-exists=.env scripts/tag-agent.ts"
   },
   "keywords": [],
   "author": "",

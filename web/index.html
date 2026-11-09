@@ -149,8 +149,27 @@
       <h2 id="past-title">Auctions so far</h2>
       <div class="tickets" id="tickets"></div>
     </section>
+
+    <section class="evidence" id="mainnet-evidence" aria-labelledby="evidence-title" hidden>
+      <div class="evidence-heading">
+        <div><span class="evidence-kicker">Celo mainnet · paid inference</span><h2 id="evidence-title">An agent bought the work it needed.</h2></div>
+        <span class="pill proof">Payment verified</span>
+      </div>
+      <p class="evidence-context">The auction replay above runs on a practice chain. This separate seller task used a real Cencori inference purchase through buy, settled on Celo mainnet.</p>
+      <div class="evidence-grid">
+        <article><h3>The job</h3><p id="evidence-input"></p></article>
+        <article class="evidence-delivery"><h3>The paid delivery</h3><p id="evidence-output"></p><a id="evidence-payment" target="_blank" rel="noopener noreferrer">View the payment ↗</a></article>
+      </div>
+      <div class="evidence-details">
+        <span><small>Third-party service</small><b>Cencori via buy</b></span>
+        <span><small>Paid on Celo</small><b id="evidence-amount"></b></span>
+        <span><small>Agent identity</small><a id="evidence-identity" target="_blank" rel="noopener noreferrer"></a></span>
+        <span><small>Evidence</small><a href="fixtures/buy-proof.json" target="_blank" rel="noopener noreferrer">Full request and receipt ↗</a></span>
+      </div>
+    </section>
   </main>
 
   <script type="module" src="ledger.js"></script>
+  <script type="module" src="evidence.js"></script>
 </body>
 </html>

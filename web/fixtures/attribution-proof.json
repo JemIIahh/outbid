@@ -1,0 +1,14 @@
+{
+  "chainId": 42220,
+  "agentId": "10065",
+  "wallet": "0x66CAF354261caFe339118c6Ce7aF30084416c327",
+  "assignedTag": "celo_f383156af981",
+  "codes": [
+    "celo_f383156af981",
+    "celo_66c20e3501f3"
+  ],
+  "transactionHash": "0x133fa7c0231920f808ef3647ba1da4a55a8637fad2889b4a84dfba4e977927f9",
+  "blockNumber": "82315764",
+  "verified": true,
+  "recordedAt": "2026-11-09T09:28:43.383Z"
+}

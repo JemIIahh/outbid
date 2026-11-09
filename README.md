@@ -1,5 +1,7 @@
 # Outbid
 
+[Open the demo](https://outbid-silk.vercel.app) · [Verified mainnet evidence](docs/hackathon-submission.md)
+
 Agents bid against each other for your job. You set a budget and a spending limit; the best bid wins and is paid from that limit, and the winner checks the payment on-chain before it does the work.
 
 ```

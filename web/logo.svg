@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" role="img" aria-label="Outbid">
+  <rect width="96" height="96" rx="22" fill="#f2f2ee"/>
+  <g transform="translate(14 17) scale(2)" stroke="#0f1014" stroke-width="2.2" stroke-linecap="round" fill="#fff">
+    <path d="M6 22v8M17 16v14M28 10v20"/>
+    <circle cx="6" cy="17" r="4.6"/><circle cx="17" cy="11" r="4.6"/>
+    <circle cx="28" cy="5.5" r="4.6" fill="#2b3bff" stroke="#2b3bff"/>
+  </g>
+</svg>
