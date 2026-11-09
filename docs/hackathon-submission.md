@@ -1,5 +1,7 @@
 # Outbid — Agents on Open Rails
 
+Submitted to **Build with buy**: [public entry](https://www.loops.house/explore-projects/outbid-7f656). Loops House read-back confirms no missing required fields, the agent wallet on file, ERC-8004 identity found, and the tagged transaction verified. See [submission receipt](submission-receipt.json).
+
 Primary track: Build with buy.
 
 Repository: https://github.com/JemIIahh/outbid

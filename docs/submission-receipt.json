@@ -1,0 +1,20 @@
+{
+  "event": "agents-on-open-rails",
+  "projectId": "be8033fc-8794-5963-887a-22d7d4eae10c",
+  "submissionId": "be8033fc-8794-5963-887a-22d7d4eae10c",
+  "slug": "outbid-7f656",
+  "url": "https://www.loops.house/explore-projects/outbid-7f656",
+  "track": "Build with buy",
+  "bountyId": "e9a90153-6486-4deb-8027-a931e5eea4d2",
+  "created": true,
+  "missingRequiredFields": [],
+  "videoUrl": "https://www.youtube.com/watch?v=W8YCraPPhMI",
+  "demoUrl": "https://outbid-silk.vercel.app",
+  "celo": {
+    "attributionTag": "celo_11ffb74cf1fb",
+    "agentWallet": "0x66CAF354261caFe339118c6Ce7aF30084416c327",
+    "hasIdentity": true,
+    "agentId": "10065",
+    "firstTaggedTx": "0x69794450349f29c41f51c32a0b9360141774e075aef021ab17e12915b21c8b76"
+  }
+}
