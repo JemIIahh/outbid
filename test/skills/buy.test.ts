@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { buyChat, BUY_INFERENCE, inferenceBody, quoteInference } from "../../src/skills/buy.js";
+import { buyChat, buyToken, BUY_INFERENCE, inferenceBody, quoteInference } from "../../src/skills/buy.js";
 import { builderCodes, attributionSuffix } from "../../src/chain/attribution.js";
 import { fromDataSuffix } from "@celo/attribution-tags";
 import { llmFromEnv } from "../../src/skills/llm.js";
@@ -11,6 +11,13 @@ function server(overrides = {}) {
     .mockResolvedValueOnce(new Response(JSON.stringify({ x402Version: 1, accepts: [{ ...offer, ...overrides }], error: "Payment Required" }), { status: 402 }));
 }
 describe("buy inference", () => {
+  it("quotes USDC when selected and uses its fee adapter", async () => {
+    const token = buyToken({ OUTBID_BUY_TOKEN: "USDC" });
+    const quote = await quoteInference(inferenceBody(request), server({ asset: token.address }), { OUTBID_BUY_TOKEN: "USDC" });
+    expect(quote.token).toBe("USDC");
+    expect(token.feeCurrency).toBe("0x2F25deB3848C207fc8E0c34035B3Ba7fC157602B");
+    expect(() => buyToken({ OUTBID_BUY_TOKEN: "BAD" })).toThrow();
+  });
   it("selects paid buy inference without an upstream API key", () => {
     expect(llmFromEnv({ OUTBID_LLM_PROVIDER: "buy" })).toMatchObject({ provider: "buy", fast: "maximo-atlas-1.3", strong: "maximo-atlas-1.3" });
   });

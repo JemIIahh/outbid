@@ -4,10 +4,12 @@ import { createPublicClient, createWalletClient, decodeEventLog, encodeFunctionD
 import { privateKeyToAccount } from "viem/accounts";
 import { celo } from "viem/chains";
 import { attributionSuffix, builderCodes } from "../src/chain/attribution.js";
+import { buyToken } from "../src/skills/buy.js";
 
 // Celo's canonical ERC-8004 identity registry; source: Celo AI agent documentation.
 const registry = "0x8004A169FB4a3325136EB29fA0ceB6D2e539a432" as const;
-const feeCurrency = "0x0e2a3e05bc9a16f5292a6170456a710cb89c6f72" as const;
+const token = buyToken(process.env);
+const feeCurrency = token.feeCurrency;
 const abi = parseAbi(["function register(string agentURI) returns (uint256 agentId)", "event Registered(uint256 indexed agentId, string agentURI, address indexed owner)"]);
 if (!process.env.OUTBID_BUYER_KEY) throw new Error("OUTBID_BUYER_KEY is required");
 const account = privateKeyToAccount(process.env.OUTBID_BUYER_KEY as `0x${string}`);
@@ -26,18 +28,20 @@ await mkdir("state", { recursive: true });
 if (!process.argv.includes("--execute")) {
   let estimate: string;
   try { estimate = (await pub.estimateContractGas(request)).toString(); } catch { estimate = "Wallet needs funding before gas estimation"; }
-  console.log(JSON.stringify({ chainId: 42220, registry, wallet: account.address, builderCodes: builderCodes(process.env), feeToken: "USDT", estimatedGas: estimate, metadata, execute: "pnpm agent:register --execute" }, null, 2));
+  console.log(JSON.stringify({ chainId: 42220, registry, wallet: account.address, builderCodes: builderCodes(process.env), feeToken: token.symbol, estimatedGas: estimate, metadata, execute: "pnpm agent:register --execute" }, null, 2));
 } else {
   if (process.env.OUTBID_REGISTER_CONFIRM !== "yes") throw new Error("Set OUTBID_REGISTER_CONFIRM=yes to authorize the agent registration transaction");
   if (existsSync("state/agent-registration-pending.json") || existsSync("web/fixtures/agent-registration.json")) throw new Error("Registration already submitted; inspect its receipt instead of registering again");
   const wallet = createWalletClient({ account, chain: celo, transport: http(process.env.OUTBID_RPC_URL) });
   await pub.simulateContract(request);
   const prepared = await wallet.prepareTransactionRequest({ to: registry, data: `${encodeFunctionData(request)}${attributionSuffix(process.env).slice(2)}`, feeCurrency });
-  const maximumFee = (prepared.gas ?? 0n) * (prepared.maxFeePerGas ?? prepared.gasPrice ?? 0n);
-  if (!maximumFee || maximumFee > 50_000n) throw new Error(`Registration gas exceeds the 0.05 USDT cap (${formatUnits(maximumFee, 6)})`);
+  // Fee adapters price gas in 18 decimals; underlying USDC/USDT use six.
+  const feeAdapterUnits = (prepared.gas ?? 0n) * (prepared.maxFeePerGas ?? prepared.gasPrice ?? 0n);
+  const maximumFee = (feeAdapterUnits + 999_999_999_999n) / 1_000_000_000_000n;
+  if (!maximumFee || maximumFee > 50_000n) throw new Error(`Registration gas exceeds the 0.05 ${token.symbol} cap (${formatUnits(maximumFee, 6)})`);
   const serializedTransaction = await wallet.signTransaction(prepared);
   const hash = keccak256(serializedTransaction);
-  await writeFile("state/agent-registration-pending.json", JSON.stringify({ hash, wallet: account.address, registry, maximumFeeUSDT: formatUnits(maximumFee, 6) }, null, 2));
+  await writeFile("state/agent-registration-pending.json", JSON.stringify({ hash, wallet: account.address, registry, feeToken: token.symbol, maximumFee: formatUnits(maximumFee, 6) }, null, 2));
   await wallet.sendRawTransaction({ serializedTransaction });
   console.log(`Registration submitted: https://celoscan.io/tx/${hash}`);
   const receipt = await pub.waitForTransactionReceipt({ hash, timeout: 90_000 });

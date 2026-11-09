@@ -3,11 +3,12 @@ import { existsSync } from "node:fs";
 import { createPublicClient, decodeEventLog, http, parseAbi } from "viem";
 import { celo } from "viem/chains";
 import { claudeSkill } from "../src/skills/claude.js";
-import { buyChat, BUY_MODEL, inferenceBody, quoteInference } from "../src/skills/buy.js";
+import { buyChat, buyToken, BUY_MODEL, inferenceBody, quoteInference } from "../src/skills/buy.js";
 
 const task = { kind: "summarize" as const, input: "Customers praised the new checkout flow, but several reported that confirmation emails arrived late and refunds took longer than the promised three days. The operations team needs a concise summary before its weekly meeting." };
 const request = { model: BUY_MODEL, maxTokens: 400, system: "Summarize the user's text in one or two sentences. Reply with the summary only.", content: task.input };
-const quote = await quoteInference(inferenceBody(request));
+const token = buyToken(process.env);
+const quote = await quoteInference(inferenceBody(request), fetch, process.env);
 if (!process.argv.includes("--execute")) {
   console.log(JSON.stringify({ ...quote, purpose: "Outbid seller summarizes customer feedback using paid Cencori inference", execute: "pnpm buy:proof --execute" }, null, 2));
 } else {
@@ -27,7 +28,7 @@ if (!process.argv.includes("--execute")) {
   const settlement = await pub.waitForTransactionReceipt({ hash: record.receipt.txHash, timeout: 90_000 });
   const transferAbi = parseAbi(["event Transfer(address indexed from, address indexed to, uint256 value)"]);
   const paid = settlement.logs.some(log => {
-    if (log.address.toLowerCase() !== "0x48065fbbe25f71c9282ddf5e1cd6d6a887483d5e") return false;
+    if (log.address.toLowerCase() !== token.address) return false;
     try {
       const transfer = decodeEventLog({ abi: transferAbi, data: log.data, topics: log.topics });
       return transfer.args.from.toLowerCase() === record.payer.toLowerCase() && transfer.args.to.toLowerCase() === record.quote.payTo.toLowerCase() && transfer.args.value === BigInt(record.quote.amountAtomic);
